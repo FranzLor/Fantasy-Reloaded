@@ -32,8 +32,9 @@
 # Unity Asset Store tools
 /UnityAssetStoreTools*
 
-# Ignore Assets folder
-/Assets/
+# Ignore all Assets except Scripts
+/Assets/*
+!/Assets/Scripts/
 
 # Ignore crash logs
 sysinfo.log
