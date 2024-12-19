@@ -10,13 +10,16 @@ public class Player : MonoBehaviour
     private PlayerControls playerControls;
     private Vector2 movement;
     private Rigidbody2D rigidBody;
-
+    private Animator myAnimator;
+    private SpriteRenderer spriteRenderer;
 
 
     private void Awake()
     {
         playerControls = new PlayerControls();
         rigidBody = GetComponent<Rigidbody2D>();
+        myAnimator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
 
@@ -32,6 +35,7 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        AdjustPlayerFacingDirection();
         Move();
     }
 
@@ -39,10 +43,27 @@ public class Player : MonoBehaviour
     {
         movement = playerControls.Movement.Move.ReadValue<Vector2>();
 
+        myAnimator.SetFloat("moveX", movement.x);
+        myAnimator.SetFloat("moveY", movement.y);
     }
 
     private void Move()
     {
         rigidBody.MovePosition(rigidBody.position + movement * (moveSpeed * Time.fixedDeltaTime));
+    }
+
+    private void AdjustPlayerFacingDirection()
+    {
+        Vector3 mousePos = Input.mousePosition;
+        Vector3 playerScreenPoint = Camera.main.WorldToScreenPoint(transform.position);
+
+        if (mousePos.x < playerScreenPoint.x)
+        {
+            spriteRenderer.flipX = true;
+        }
+        else
+        {
+            spriteRenderer.flipX = false;
+        }
     }
 }
