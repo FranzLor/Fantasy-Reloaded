@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [SerializeField]
     private float moveSpeed = 1.0f;
@@ -12,6 +12,11 @@ public class Player : MonoBehaviour
     private Rigidbody2D rigidBody;
     private Animator myAnimator;
     private SpriteRenderer spriteRenderer;
+
+    // used for slash animation
+    private bool facingLeft = false;
+    // getter and setter for facingLeft
+    public bool FacingLeft { get { return facingLeft; } set {  facingLeft = value; } }
 
 
     private void Awake()
@@ -60,10 +65,12 @@ public class Player : MonoBehaviour
         if (mousePos.x < playerScreenPoint.x)
         {
             spriteRenderer.flipX = true;
+            FacingLeft = true;
         }
         else
         {
             spriteRenderer.flipX = false;
+            FacingLeft = false;
         }
     }
 }
