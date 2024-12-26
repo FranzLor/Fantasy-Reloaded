@@ -14,6 +14,8 @@ public class Sword : MonoBehaviour
 
     private GameObject slashAnimation = null;
 
+    [SerializeField] private Transform weaponCollider;
+
     private void Awake()
     {
         // using getcomponentinparent since both are single classes | one instance 
@@ -43,12 +45,18 @@ public class Sword : MonoBehaviour
     {
         // play attack animation
         animator.SetTrigger("Attack");
+        weaponCollider.gameObject.SetActive(true);
 
         slashAnimation = Instantiate(slashAnimationPrefab, slashAnimationSpawnpoint.position, Quaternion.identity);
         slashAnimation.transform.parent = this.transform.parent;
     }
 
-    public void SwingUpFlipAnimation()
+    public void FinishAttackAnimationEvent()
+    {
+        weaponCollider.gameObject.SetActive(false);
+    }
+
+    public void SwingUpFlipAnimationEvent()
     {
         slashAnimation.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
 
@@ -58,7 +66,7 @@ public class Sword : MonoBehaviour
         }
     }
 
-    public void SwingDownFlipAnimation()
+    public void SwingDownFlipAnimationEvent()
     {
         slashAnimation.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
 
@@ -74,15 +82,19 @@ public class Sword : MonoBehaviour
         Vector3 playerScreenPoint = Camera.main.WorldToScreenPoint(playerController.transform.position);
 
         // multiply by rad2deg to convert to degrees
+        // used for mouse follow rotation
         float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
 
         if (mousePos.x < playerScreenPoint.x)
         {
             activeWeapon.transform.rotation = Quaternion.Euler(0, -180, angle);
+            weaponCollider.transform.rotation = Quaternion.Euler(0, -180, 0);
         }
         else
         {
             activeWeapon.transform.rotation = Quaternion.Euler(0, 0, angle);
+            weaponCollider.transform.rotation = Quaternion.Euler(0, 0, 0);
+
         }
     }
 }
