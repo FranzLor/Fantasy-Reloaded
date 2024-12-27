@@ -10,13 +10,19 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField]
     private float knockbackThrust = 15.0f;
 
+    [SerializeField]
+    private GameObject deathVFX = null;
+
     private int currentHealth;
 
     private Knockback knockback;
 
+    private Flash flash;
+
     private void Awake()
     {
         knockback = GetComponent<Knockback>();
+        flash = GetComponent<Flash>();
     }
 
     private void Start()
@@ -33,6 +39,13 @@ public class EnemyHealth : MonoBehaviour
 
         knockback.GetKnockedBack(PlayerController.Instance.transform, knockbackThrust);
 
+        StartCoroutine(flash.FlashRoutine());
+        StartCoroutine(CheckDetectDeathRoutine());
+    }
+     
+    private IEnumerator CheckDetectDeathRoutine()
+    {
+        yield return new WaitForSeconds(flash.GetRestoreMatTime());
         DetectDeath();
     }
 
@@ -40,6 +53,7 @@ public class EnemyHealth : MonoBehaviour
     {
         if (currentHealth <= 0)
         {
+            Instantiate(deathVFX, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }
