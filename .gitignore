@@ -45,6 +45,18 @@ Thumbs.db
 *.apk
 *.unitypackage
 *.tmp
-.vs/Fantasy, Reloaded/CopilotIndices/0.2.1657.32929/CodeChunks.db-shm
-/.vs
+.vs/
 *.db
+
+# Ignore everything in the Build folder
+Build/**
+
+# Allow necessary files in the Build folder (replace with the appropriate extensions for your game)
+!Build/*.exe        # Include the game executable
+!Build/*.dll        # Include necessary DLLs
+!Build/*.pdb        # Include PDBs if needed for debugging
+!Build/*.data       # Include Unity data files
+!Build/*.json       # Include JSON config files if applicable
+!Build/*.wasm       # Include WebAssembly files (for WebGL builds)
+!Build/*.js         # Include JavaScript files (for WebGL builds)
+!Build/StreamingAssets/**  # Include streaming assets (if used)
