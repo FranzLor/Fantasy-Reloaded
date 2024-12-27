@@ -1,2 +1,5 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Treat all C# files as the primary language
+*.cs linguist-language=C#
+
+# Exclude build artifacts from language stats
+Build/* linguist-vendored
