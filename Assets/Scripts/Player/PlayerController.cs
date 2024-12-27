@@ -18,9 +18,13 @@ public class PlayerController : MonoBehaviour
     // getter and setter for facingLeft
     public bool FacingLeft { get { return facingLeft; } set {  facingLeft = value; } }
 
+    // singleton TODO
+    public static PlayerController Instance;
 
     private void Awake()
     {
+        Instance = this;
+
         playerControls = new PlayerControls();
         rigidBody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
