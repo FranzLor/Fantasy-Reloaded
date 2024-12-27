@@ -4,17 +4,29 @@ using UnityEngine;
 
 public class Sword : MonoBehaviour
 {
+    [SerializeField] 
+    private GameObject slashAnimationPrefab;
+
+    [SerializeField] 
+    private Transform slashAnimationSpawnpoint;
+
+    [SerializeField] 
+    private Transform weaponCollider;
+
+    // DONT SET TOO SHORT, creates weapon collider bug where it never toggles
+    [SerializeField]
+    private float attackCooldown = 0.5f;
+
     private PlayerControls playerControls;
     private Animator animator;
     private PlayerController playerController;
     private ActiveWeapon activeWeapon;
 
-    [SerializeField] private GameObject slashAnimationPrefab;
-    [SerializeField] private Transform slashAnimationSpawnpoint;
-
     private GameObject slashAnimation = null;
 
-    [SerializeField] private Transform weaponCollider;
+    // used for holding down attk button
+    private bool attackButtonDown, isAttacking = false;
+
 
     private void Awake()
     {
@@ -33,22 +45,50 @@ public class Sword : MonoBehaviour
     private void Start()
     {
         // not passing any parameters to the lambda function
-        playerControls.Combat.Attack.started += _ => Attack();
+        playerControls.Combat.Attack.started += _ => StartAttacking();
+        playerControls.Combat.Attack.canceled += _ => StopAttacking();
     }
 
     private void Update()
     {
         MouseFollowWithOffset();
+        Attack();
+    }
+
+    private void StartAttacking()
+    {
+        attackButtonDown = true;
+    }
+
+    private void StopAttacking()
+    {
+        attackButtonDown = false;
+
     }
 
     private void Attack()
     {
-        // play attack animation
-        animator.SetTrigger("Attack");
-        weaponCollider.gameObject.SetActive(true);
+        if (attackButtonDown && !isAttacking)
+        {
+            isAttacking = true;
 
-        slashAnimation = Instantiate(slashAnimationPrefab, slashAnimationSpawnpoint.position, Quaternion.identity);
-        slashAnimation.transform.parent = this.transform.parent;
+            // play attack animation
+            animator.SetTrigger("Attack");
+            weaponCollider.gameObject.SetActive(true);
+
+            slashAnimation = Instantiate(slashAnimationPrefab, slashAnimationSpawnpoint.position, Quaternion.identity);
+            slashAnimation.transform.parent = this.transform.parent;
+
+            StartCoroutine(AttackCooldownRoutine());
+        }
+
+    }
+
+    private IEnumerator AttackCooldownRoutine()
+    {
+        yield return new WaitForSeconds(attackCooldown);
+        isAttacking = false;
+
     }
 
     public void FinishAttackAnimationEvent()

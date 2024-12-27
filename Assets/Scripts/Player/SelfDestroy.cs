@@ -13,11 +13,11 @@ public class SelfDestroy : MonoBehaviour
     {
         if (particleSystem && !particleSystem.IsAlive())
         {
-            DestroySelf();
+            DestroySelfAnimationEvent();
         }
     }
 
-        public void DestroySelf()
+        public void DestroySelfAnimationEvent()
     {
         Destroy(gameObject);
     }

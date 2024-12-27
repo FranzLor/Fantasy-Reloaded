@@ -7,16 +7,31 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float moveSpeed = 1.0f;
 
+    [SerializeField]
+    private float dashSpeed = 2.0f;
+
+    [SerializeField]
+    private float dashTime = 0.18f;
+
+    [SerializeField]
+    private TrailRenderer trailRenderer;
+
+    [SerializeField]
+    private float dashCooldown = 1.0f;
+
     private PlayerControls playerControls;
     private Vector2 movement;
     private Rigidbody2D rigidBody;
     private Animator myAnimator;
     private SpriteRenderer spriteRenderer;
+    private float startingMoveSpeed;
+
+    private bool isDashing = false;
 
     // used for slash animation
     private bool facingLeft = false;
     // getter and setter for facingLeft
-    public bool FacingLeft { get { return facingLeft; } set {  facingLeft = value; } }
+    public bool FacingLeft { get { return facingLeft; } }
 
     // singleton TODO
     public static PlayerController Instance;
@@ -29,6 +44,13 @@ public class PlayerController : MonoBehaviour
         rigidBody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void Start()
+    {
+        playerControls.Combat.Dash.performed += _ => Dash();
+
+        startingMoveSpeed = moveSpeed;
     }
 
 
@@ -69,12 +91,33 @@ public class PlayerController : MonoBehaviour
         if (mousePos.x < playerScreenPoint.x)
         {
             spriteRenderer.flipX = true;
-            FacingLeft = true;
+            facingLeft = true;
         }
         else
         {
             spriteRenderer.flipX = false;
-            FacingLeft = false;
+            facingLeft = false;
         }
+    }
+
+    private void Dash()
+    {
+        if (!isDashing)
+        {
+            isDashing = true;
+            moveSpeed *= dashSpeed;
+            trailRenderer.emitting = true;
+            StartCoroutine(EndDashRoutine());
+        }
+    }
+
+    private IEnumerator EndDashRoutine()
+    {
+        yield return new WaitForSeconds(dashTime);
+        moveSpeed = startingMoveSpeed;
+        trailRenderer.emitting = false;
+
+        yield return new WaitForSeconds(dashCooldown);
+        isDashing = false;
     }
 }
