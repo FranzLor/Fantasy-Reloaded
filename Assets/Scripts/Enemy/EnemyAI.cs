@@ -9,6 +9,7 @@ public class EnemyAI : MonoBehaviour
 
     private enum State
     {
+        // TODO: more states, chasing, attacking, etc...
         Roaming
     }
 
@@ -28,6 +29,7 @@ public class EnemyAI : MonoBehaviour
 
     private IEnumerator RoamingRoutine()
     {
+        // always roam by default
         while (state == State.Roaming)
         {
             Vector2 roamPosition = GetRoamingPosition();

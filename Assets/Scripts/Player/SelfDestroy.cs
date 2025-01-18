@@ -17,7 +17,7 @@ public class SelfDestroy : MonoBehaviour
         }
     }
 
-        public void DestroySelfAnimationEvent()
+    public void DestroySelfAnimationEvent()
     {
         Destroy(gameObject);
     }
