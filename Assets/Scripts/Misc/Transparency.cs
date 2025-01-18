@@ -24,12 +24,12 @@ public class Transparency : MonoBehaviour
     {
         if (other.gameObject.GetComponent<PlayerController>())
         {
+            // fade
             foreach (var spriteRenderer in spriteRenderers)
             {
                 StartCoroutine(FadeRoutine(spriteRenderer, fadeTime, spriteRenderer.color.a, transparencyAmount));
             }
 
-            // Fade all Tilemaps
             foreach (var tilemap in tilemaps)
             {
                 StartCoroutine(FadeRoutine(tilemap, fadeTime, tilemap.color.a, transparencyAmount));
