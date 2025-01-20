@@ -24,15 +24,26 @@ public class Transparency : MonoBehaviour
     {
         if (other.gameObject.GetComponent<PlayerController>())
         {
-            // fade
-            foreach (var spriteRenderer in spriteRenderers)
+            if (spriteRenderers != null && spriteRenderers.Length > 0)
             {
-                StartCoroutine(FadeRoutine(spriteRenderer, fadeTime, spriteRenderer.color.a, transparencyAmount));
+                foreach (var spriteRenderer in spriteRenderers)
+                {
+                    if (spriteRenderer != null)
+                    {
+                        StartCoroutine(FadeRoutine(spriteRenderer, fadeTime, spriteRenderer.color.a, transparencyAmount));
+                    }
+                }
             }
 
-            foreach (var tilemap in tilemaps)
+            if (tilemaps != null && tilemaps.Length > 0)
             {
-                StartCoroutine(FadeRoutine(tilemap, fadeTime, tilemap.color.a, transparencyAmount));
+                foreach (var tilemap in tilemaps)
+                {
+                    if (tilemap != null) // Ensure each Tilemap is valid
+                    {
+                        StartCoroutine(FadeRoutine(tilemap, fadeTime, tilemap.color.a, transparencyAmount));
+                    }
+                }
             }
 
         }
@@ -42,14 +53,26 @@ public class Transparency : MonoBehaviour
     {
         if (other.gameObject.GetComponent<PlayerController>())
         {
-            foreach (var spriteRenderer in spriteRenderers)
+            if (spriteRenderers != null && spriteRenderers.Length > 0)
             {
-                StartCoroutine(FadeRoutine(spriteRenderer, fadeTime, spriteRenderer.color.a, 1.0f));
+                foreach (var spriteRenderer in spriteRenderers)
+                {
+                    if (spriteRenderer != null)
+                    {
+                        StartCoroutine(FadeRoutine(spriteRenderer, fadeTime, spriteRenderer.color.a, 1.0f));
+                    }
+                }
             }
 
-            foreach (var tilemap in tilemaps)
+            if (tilemaps != null && tilemaps.Length > 0)
             {
-                StartCoroutine(FadeRoutine(tilemap, fadeTime, tilemap.color.a, 1.0f));
+                foreach (var tilemap in tilemaps)
+                {
+                    if (tilemap != null)
+                    {
+                        StartCoroutine(FadeRoutine(tilemap, fadeTime, tilemap.color.a, 1.0f));
+                    }
+                }
             }
         }
     }
