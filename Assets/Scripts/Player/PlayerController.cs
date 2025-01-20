@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Singleton<PlayerController>
 {
     [SerializeField]
     private float moveSpeed = 4.0f;
@@ -33,12 +33,10 @@ public class PlayerController : MonoBehaviour
     // getter and setter for facingLeft
     public bool FacingLeft { get { return facingLeft; } }
 
-    // singleton TODO
-    public static PlayerController Instance;
-
-    private void Awake()
+    protected override void Awake()
     {
-        Instance = this;
+        // called from singleton script
+        base.Awake();
 
         playerControls = new PlayerControls();
         rigidBody = GetComponent<Rigidbody2D>();
