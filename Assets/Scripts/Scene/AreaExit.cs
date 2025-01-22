@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class AreaExit : Singleton<AreaExit>
+public class AreaExit : MonoBehaviour 
 {
     [SerializeField] private string sceneToLoad;
     [SerializeField] private string sceneTransitionName;
