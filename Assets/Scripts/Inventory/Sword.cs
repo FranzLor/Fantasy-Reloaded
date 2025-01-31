@@ -4,30 +4,19 @@ using UnityEngine;
 
 public class Sword : MonoBehaviour, InterfaceWeapon
 {
-    [SerializeField] 
-    private GameObject slashAnimationPrefab;
-
-    [SerializeField] 
-    private Transform slashAnimationSpawnpoint;
-
-    [SerializeField] 
-    private Transform weaponCollider;
-
+    [SerializeField] private GameObject slashAnimationPrefab;
     // DONT SET TOO SHORT, creates weapon collider bug where it never toggles
     [SerializeField]
     private float attackCooldown = 0.5f;
 
+    private Transform weaponCollider;
+    private Transform slashAnimationSpawnpoint;
     private Animator animator;
-    private PlayerController playerController;
-    private ActiveWeapon activeWeapon;
-
     private GameObject slashAnimation = null;
 
     private void Awake()
     {
         // using getcomponentinparent since both are single classes | one instance 
-        playerController = GetComponentInParent<PlayerController>();
-        activeWeapon = GetComponentInParent<ActiveWeapon>();
         animator = GetComponent<Animator>();
     }
 
@@ -51,6 +40,12 @@ public class Sword : MonoBehaviour, InterfaceWeapon
 
     }
 
+    private void Start()
+    {
+        weaponCollider = PlayerController.Instance.GetWeaponCollider();
+        slashAnimationSpawnpoint = PlayerController.Instance.GetSlashAnimationSpawnpoint();
+    }
+
     private IEnumerator AttackCooldownRoutine()
     {
         yield return new WaitForSeconds(attackCooldown);
@@ -67,7 +62,7 @@ public class Sword : MonoBehaviour, InterfaceWeapon
     {
         slashAnimation.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
 
-        if (playerController.FacingLeft)
+        if (PlayerController.Instance.FacingLeft)
         {
             slashAnimation.GetComponent<SpriteRenderer>().flipX = true;
         }
@@ -77,7 +72,7 @@ public class Sword : MonoBehaviour, InterfaceWeapon
     {
         slashAnimation.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
 
-        if (playerController.FacingLeft)
+        if (PlayerController.Instance.FacingLeft)
         {
             slashAnimation.GetComponent<SpriteRenderer>().flipX = true;
         }
@@ -86,7 +81,7 @@ public class Sword : MonoBehaviour, InterfaceWeapon
     private void MouseFollowWithOffset()
     {
         Vector3 mousePos = Input.mousePosition;
-        Vector3 playerScreenPoint = Camera.main.WorldToScreenPoint(playerController.transform.position);
+        Vector3 playerScreenPoint = Camera.main.WorldToScreenPoint(PlayerController.Instance.transform.position);
 
         // multiply by rad2deg to convert to degrees
         // used for mouse follow rotation
@@ -94,12 +89,12 @@ public class Sword : MonoBehaviour, InterfaceWeapon
 
         if (mousePos.x < playerScreenPoint.x)
         {
-            activeWeapon.transform.rotation = Quaternion.Euler(0, -180, angle);
+            ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0, -180, angle);
             weaponCollider.transform.rotation = Quaternion.Euler(0, -180, 0);
         }
         else
         {
-            activeWeapon.transform.rotation = Quaternion.Euler(0, 0, angle);
+            ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0, 0, angle);
             weaponCollider.transform.rotation = Quaternion.Euler(0, 0, 0);
 
         }

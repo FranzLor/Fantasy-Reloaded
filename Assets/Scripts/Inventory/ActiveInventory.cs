@@ -17,6 +17,9 @@ public class ActiveInventory : MonoBehaviour
         // in player action input map, put scale processors based off which slot is selected
 
         playerControls.Inventory.Keyboard.performed += ctx => ToggleActiveSlot((int)ctx.ReadValue<float>());
+
+        // instantiate sword as active weapon upon start
+        ToggleActiveHighlight(0);
     }
 
     private void OnEnable()
@@ -47,6 +50,28 @@ public class ActiveInventory : MonoBehaviour
 
     private void SwitchActiveWeapon()
     {
+        if (ActiveWeapon.Instance.CurrentActiveWeapon != null)
+        {
+            Destroy(ActiveWeapon.Instance.CurrentActiveWeapon.gameObject);
+        }
 
+        // exit if no weapon in slot
+        if (!transform.GetChild(activeSlotIndex).GetComponentInChildren<InventorySlot>())
+        {
+            ActiveWeapon.Instance.WeaponNull();
+            return;
+        }
+
+        // kind of ugly but it works for now
+        GameObject weaponToSpawn = transform
+            .GetChild(activeSlotIndex)
+            .GetComponentInChildren<InventorySlot>()
+            .GetWeaponDetails().weaponPrefab;
+
+        GameObject newWeapon = Instantiate(weaponToSpawn, ActiveWeapon.Instance.transform.position, Quaternion.identity);
+
+        newWeapon.transform.parent = ActiveWeapon.Instance.transform;
+
+        ActiveWeapon.Instance.NewWeapon(newWeapon.GetComponent<MonoBehaviour>());
     }
 }

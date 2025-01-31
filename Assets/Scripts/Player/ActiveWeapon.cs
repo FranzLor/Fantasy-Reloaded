@@ -3,11 +3,11 @@ using UnityEngine.Rendering;
 
 public class ActiveWeapon : Singleton<ActiveWeapon>
 {
-    [SerializeField] private MonoBehaviour currentActiveWeapon;
+    public MonoBehaviour CurrentActiveWeapon { get; private set; }
 
     private PlayerControls playerControls;
 
-    // used for holding down attk button
+    // used for holding down attack button
     private bool attackButtonDown, isAttacking = false;
 
     protected override void Awake()
@@ -28,6 +28,16 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
     private void Update()
     {
         Attack();
+    }
+
+    public void NewWeapon(MonoBehaviour newWeapon)
+    {
+        CurrentActiveWeapon = newWeapon;
+    }
+
+    public void WeaponNull()
+    {
+        CurrentActiveWeapon = null;
     }
 
     public void ToggleIsAttacking(bool value)
@@ -56,7 +66,7 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
         if (attackButtonDown && !isAttacking)
         {
             isAttacking = true;
-            (currentActiveWeapon as InterfaceWeapon).Attack();
+            (CurrentActiveWeapon as InterfaceWeapon).Attack();
         }
     }
 }

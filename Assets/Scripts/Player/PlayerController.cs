@@ -4,20 +4,19 @@ using UnityEngine;
 
 public class PlayerController : Singleton<PlayerController>
 {
-    [SerializeField]
-    private float moveSpeed = 4.0f;
+    [SerializeField] private float moveSpeed = 4.0f;
 
-    [SerializeField]
-    private float dashSpeed = 2.0f;
+    [SerializeField] private float dashSpeed = 2.0f;
 
-    [SerializeField]
-    private float dashTime = 0.18f;
+    [SerializeField] private float dashTime = 0.18f;
 
-    [SerializeField]
-    private TrailRenderer trailRenderer;
+    [SerializeField] private TrailRenderer trailRenderer;
 
-    [SerializeField]
-    private float dashCooldown = 1.0f;
+    [SerializeField] private float dashCooldown = 1.0f;
+
+    [SerializeField] private Transform weaponCollider;
+
+    [SerializeField] private Transform slashAnimationSpawnpoint;
 
     private PlayerControls playerControls;
     private Vector2 movement;
@@ -66,6 +65,16 @@ public class PlayerController : Singleton<PlayerController>
     {
         AdjustPlayerFacingDirection();
         Move();
+    }
+
+    public Transform GetWeaponCollider()
+    {
+        return weaponCollider;
+    }
+
+    public Transform GetSlashAnimationSpawnpoint()
+    {
+        return slashAnimationSpawnpoint;
     }
 
     private void PlayerInput()
