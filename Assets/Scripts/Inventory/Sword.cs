@@ -6,8 +6,10 @@ public class Sword : MonoBehaviour, InterfaceWeapon
 {
     [SerializeField] private GameObject slashAnimationPrefab;
 
-    // DONT SET TOO SHORT, creates weapon collider bug where it never toggles
+    // DO NOT SET TOO SHORT, creates weapon collider bug where it never toggles
     [SerializeField] private float attackCooldown = 0.5f;
+
+    [SerializeField] private WeaponDetails weaponDetails;
 
     private Transform weaponCollider;
     private Transform slashAnimationSpawnpoint;
@@ -25,6 +27,11 @@ public class Sword : MonoBehaviour, InterfaceWeapon
         MouseFollowWithOffset();
     }
 
+    public WeaponDetails GetWeaponDetails()
+    {
+        return weaponDetails;
+    }
+
     public void Attack()
     {
         // isAttacking = true;
@@ -35,22 +42,12 @@ public class Sword : MonoBehaviour, InterfaceWeapon
 
         slashAnimation = Instantiate(slashAnimationPrefab, slashAnimationSpawnpoint.position, Quaternion.identity);
         slashAnimation.transform.parent = this.transform.parent;
-
-        StartCoroutine(AttackCooldownRoutine());
-
     }
 
     private void Start()
     {
         weaponCollider = PlayerController.Instance.GetWeaponCollider();
         slashAnimationSpawnpoint = PlayerController.Instance.GetSlashAnimationSpawnpoint();
-    }
-
-    private IEnumerator AttackCooldownRoutine()
-    {
-        yield return new WaitForSeconds(attackCooldown);
-        ActiveWeapon.Instance.ToggleIsAttacking(false);
-
     }
 
     public void FinishAttackAnimationEvent()

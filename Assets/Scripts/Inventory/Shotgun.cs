@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Shotgun : MouseFollow, InterfaceWeapon
 {
+    [SerializeField] private WeaponDetails weaponDetails;
+
     private SpriteRenderer weaponSprite;
 
     private void Awake()
@@ -14,11 +16,14 @@ public class Shotgun : MouseFollow, InterfaceWeapon
             Debug.LogWarning("Couldn't find Shotgun Sprite.");
         }
     }
+    public WeaponDetails GetWeaponDetails()
+    {
+        return weaponDetails;
+    }
+
     public void Attack()
     {
         Debug.Log("POW");
-        ActiveWeapon.Instance.ToggleIsAttacking(false);
-
     }
 
     protected override void FaceMouse()
