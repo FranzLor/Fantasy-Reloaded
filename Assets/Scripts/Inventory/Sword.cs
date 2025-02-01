@@ -5,9 +5,9 @@ using UnityEngine;
 public class Sword : MonoBehaviour, InterfaceWeapon
 {
     [SerializeField] private GameObject slashAnimationPrefab;
+
     // DONT SET TOO SHORT, creates weapon collider bug where it never toggles
-    [SerializeField]
-    private float attackCooldown = 0.5f;
+    [SerializeField] private float attackCooldown = 0.5f;
 
     private Transform weaponCollider;
     private Transform slashAnimationSpawnpoint;

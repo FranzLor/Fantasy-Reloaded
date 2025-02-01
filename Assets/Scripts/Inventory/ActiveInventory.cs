@@ -70,6 +70,9 @@ public class ActiveInventory : MonoBehaviour
 
         GameObject newWeapon = Instantiate(weaponToSpawn, ActiveWeapon.Instance.transform.position, Quaternion.identity);
 
+        // fixes rotation issue with mouse following weapon - script
+        ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
+
         newWeapon.transform.parent = ActiveWeapon.Instance.transform;
 
         ActiveWeapon.Instance.NewWeapon(newWeapon.GetComponent<MonoBehaviour>());
