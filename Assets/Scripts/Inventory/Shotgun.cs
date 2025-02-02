@@ -3,7 +3,6 @@ using UnityEngine;
 public class Shotgun : MouseFollow, InterfaceWeapon
 {
     [SerializeField] private WeaponDetails weaponDetails;
-
     private SpriteRenderer weaponSprite;
 
     private void Awake()
