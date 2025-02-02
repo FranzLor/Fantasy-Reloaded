@@ -28,8 +28,6 @@ public class Shotgun : MouseFollow, InterfaceWeapon
 
     protected override void FaceMouse()
     {
-        base.FaceMouse();
-
         Vector3 mousePosition = Input.mousePosition;
         Vector3 playerScreenPoint = Camera.main.WorldToScreenPoint(PlayerController.Instance.transform.position);
 
