@@ -34,8 +34,6 @@ public class EnemyHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
-        // TODO
-        Debug.Log("Health: " + currentHealth);
 
         knockback.GetKnockedBack(PlayerController.Instance.transform, knockbackThrust);
 

@@ -15,7 +15,6 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private float dashCooldown = 1.0f;
 
     [SerializeField] private Transform weaponCollider;
-
     [SerializeField] private Transform slashAnimationSpawnpoint;
 
     private PlayerControls playerControls;
