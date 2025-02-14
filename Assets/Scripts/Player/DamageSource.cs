@@ -2,8 +2,15 @@ using UnityEngine;
 
 public class DamageSource : MonoBehaviour
 {
-    [SerializeField]
-    private int damageAmount = 50;
+    private int damageAmount;
+
+    private void Start()
+    {
+        // change damage amount from weapon details - scriptable object
+
+        MonoBehaviour currentActiveWeapon = ActiveWeapon.Instance.CurrentActiveWeapon;
+        damageAmount = (currentActiveWeapon as InterfaceWeapon).GetWeaponDetails().weaponDamage;
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {

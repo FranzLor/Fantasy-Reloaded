@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class ShotgunPellets : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 18.0f;
+    [SerializeField] private float moveSpeed = 24.0f;
     [SerializeField] private GameObject particlePrefabVFX;
 
     private WeaponDetails weaponDetails;

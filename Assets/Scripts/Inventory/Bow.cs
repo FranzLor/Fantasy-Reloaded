@@ -8,7 +8,7 @@ public class Bow : MonoBehaviour, InterfaceWeapon
 
     private Animator animator;
     // should improve performance with hash instead of string
-    readonly int Fire_Hash = Animator.StringToHash("Fire");
+    readonly int attackHash = Animator.StringToHash("Fire");
 
     private void Awake()
     {
@@ -22,7 +22,7 @@ public class Bow : MonoBehaviour, InterfaceWeapon
 
     public void Attack()
     {
-        animator.SetTrigger(Fire_Hash);
+        animator.SetTrigger(attackHash);
         GameObject newArrow = Instantiate(arrowPrefab, arrowSpawnPoint.position, ActiveWeapon.Instance.transform.rotation);
         newArrow.GetComponent<Projectile>().UpdateWeaponDetails(weaponDetails);
     }

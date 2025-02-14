@@ -25,6 +25,7 @@ public class PlayerController : Singleton<PlayerController>
     private float startingMoveSpeed;
 
     private bool isDashing = false;
+    private bool isKnockbackActive = false;
 
     // used for slash animation
     private bool facingLeft = false;
@@ -86,7 +87,32 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Move()
     {
-        rigidBody.MovePosition(rigidBody.position + movement * (moveSpeed * Time.fixedDeltaTime));
+        //rigidBody.MovePosition(rigidBody.position + movement * (moveSpeed * Time.fixedDeltaTime));
+        if (isKnockbackActive)
+        {
+
+        }
+        else
+        {
+            rigidBody.MovePosition(rigidBody.position + movement * (moveSpeed * Time.fixedDeltaTime));
+        }
+
+        //Vector2 moveForce = movement * moveSpeed;
+        // rigidBody.AddForce(moveForce, ForceMode2D.Force);
+    }
+
+    public void ApplyKnockback(Vector2 knockbackForce)
+    {
+        isKnockbackActive = true;
+        //Vector2 moveForce = movement * moveSpeed;
+        rigidBody.AddForce(knockbackForce, ForceMode2D.Impulse);
+        StartCoroutine(ResetKnockback());
+    }
+
+    private IEnumerator ResetKnockback()
+    {
+        yield return new WaitForSeconds(0.2f);
+        isKnockbackActive = false;
     }
 
     private void AdjustPlayerFacingDirection()
