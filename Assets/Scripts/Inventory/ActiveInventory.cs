@@ -50,23 +50,29 @@ public class ActiveInventory : MonoBehaviour
 
     private void SwitchActiveWeapon()
     {
-        if (ActiveWeapon.Instance.CurrentActiveWeapon != null)
-        {
-            Destroy(ActiveWeapon.Instance.CurrentActiveWeapon.gameObject);
-        }
 
-        // exit if no weapon in slot
-        if (!transform.GetChild(activeSlotIndex).GetComponentInChildren<InventorySlot>())
+        Transform childTransform = transform.GetChild(activeSlotIndex);
+        InventorySlot inventorySlot = childTransform.GetComponentInChildren<InventorySlot>();
+
+        if (inventorySlot == null || inventorySlot.GetWeaponDetails() == null)
         {
+
+            if (ActiveWeapon.Instance.CurrentActiveWeapon != null)
+            {
+                Destroy(ActiveWeapon.Instance.CurrentActiveWeapon.gameObject);
+            }
+
             ActiveWeapon.Instance.WeaponNull();
             return;
         }
 
-        // kind of ugly but it works for now
-        GameObject weaponToSpawn = transform
-            .GetChild(activeSlotIndex)
-            .GetComponentInChildren<InventorySlot>()
-            .GetWeaponDetails().weaponPrefab;
+        WeaponDetails weaponDetails = inventorySlot.GetWeaponDetails();
+        GameObject weaponToSpawn = weaponDetails.weaponPrefab;
+
+        if (ActiveWeapon.Instance.CurrentActiveWeapon != null)
+        {
+            Destroy(ActiveWeapon.Instance.CurrentActiveWeapon.gameObject);
+        }
 
         GameObject newWeapon = Instantiate(weaponToSpawn, ActiveWeapon.Instance.transform.position, Quaternion.identity);
 
