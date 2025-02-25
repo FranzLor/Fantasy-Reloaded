@@ -22,6 +22,7 @@ public class PlayerController : Singleton<PlayerController>
     private Rigidbody2D rigidBody;
     private Animator myAnimator;
     private SpriteRenderer spriteRenderer;
+    private Knockback knockback;
     private float startingMoveSpeed;
 
     private bool isDashing = false;
@@ -41,6 +42,7 @@ public class PlayerController : Singleton<PlayerController>
         rigidBody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        knockback = GetComponent<Knockback>();
     }
 
     private void Start()
@@ -87,6 +89,13 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Move()
     {
+        // might need to update for shotgun knockback
+        // if enemy knockback, turns off movement to apply knockback
+        if (knockback.gettingKnockedBack)
+        {
+            return;
+        }
+
         //rigidBody.MovePosition(rigidBody.position + movement * (moveSpeed * Time.fixedDeltaTime));
         if (isKnockbackActive)
         {
