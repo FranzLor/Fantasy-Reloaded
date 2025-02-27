@@ -7,8 +7,9 @@ public class Knockback : MonoBehaviour
     [SerializeField] private float knockbackTime = 0.15f;
 
     private Rigidbody2D rigidBody;
+    private bool gettingKnockedBack = false;
 
-    public bool gettingKnockedBack { get; private set; }
+    public bool GettingKnockedBack => gettingKnockedBack;
 
     private void Awake()
     {
@@ -19,17 +20,21 @@ public class Knockback : MonoBehaviour
     {
         gettingKnockedBack = true;
         // gets the direction from the enemy to the player, normalizes it, and multiplies it by the knockback thrust and the mass of the rigidbody
-        Vector2 difference = (transform.position - damageSource.position).normalized * knockbackThrust * rigidBody.mass;
-        rigidBody.AddForce(difference, ForceMode2D.Impulse);
-
-        StartCoroutine(KnockRoutine());
+        Vector2 knockbackDirection = (transform.position - damageSource.position).normalized;
+        rigidBody.AddForce(knockbackDirection * knockbackThrust, ForceMode2D.Impulse);
+        StartCoroutine(ResetKnockback());
     }
 
-    private IEnumerator KnockRoutine()
+    public void GetKnockedBack(Vector2 direction, float knockbackThrust)
+    {
+        gettingKnockedBack = true;
+        rigidBody.AddForce(direction * knockbackThrust, ForceMode2D.Impulse);
+        StartCoroutine(ResetKnockback());
+    }
+
+    private IEnumerator ResetKnockback()
     {
         yield return new WaitForSeconds(knockbackTime);
-
-        rigidBody.linearVelocity = Vector2.zero;
         gettingKnockedBack = false;
     }
 }

@@ -60,18 +60,8 @@ public class Shotgun : MouseFollow, InterfaceWeapon
 
     private void ApplyKnockback()
     {
-        Rigidbody2D playerRigidbody = PlayerController.Instance.GetComponent<Rigidbody2D>();
-
-        if (playerRigidbody != null)
-        {
-            Vector2 knockbackDirection = -transform.right;
-            Debug.Log("Knockback Direction: " + knockbackDirection);
-            PlayerController.Instance.ApplyKnockback(knockbackDirection * knockbackForce);
-        }
-        else
-        {
-            Debug.LogWarning("Couldn't find Player Rigidbody2D.");
-        }
+        Vector2 knockbackDirection = -transform.right;
+        PlayerController.Instance.ApplyKnockback(knockbackDirection, knockbackForce);
     }
 
 }

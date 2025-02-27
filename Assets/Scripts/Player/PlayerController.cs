@@ -89,33 +89,22 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Move()
     {
-        // might need to update for shotgun knockback
-        // if enemy knockback, turns off movement to apply knockback
-        if (knockback.gettingKnockedBack)
+        if (knockback.GettingKnockedBack)
         {
+            // Let the knockback force handle movement
             return;
         }
 
-        //rigidBody.MovePosition(rigidBody.position + movement * (moveSpeed * Time.fixedDeltaTime));
-        if (isKnockbackActive)
-        {
-
-        }
-        else
-        {
-            rigidBody.MovePosition(rigidBody.position + movement * (moveSpeed * Time.fixedDeltaTime));
-        }
+        // Use MovePosition for precise movement
+        rigidBody.MovePosition(rigidBody.position + movement * (moveSpeed * Time.fixedDeltaTime));
 
         //Vector2 moveForce = movement * moveSpeed;
         // rigidBody.AddForce(moveForce, ForceMode2D.Force);
     }
 
-    public void ApplyKnockback(Vector2 knockbackForce)
+    public void ApplyKnockback(Vector2 knockbackDirection, float knockbackForce)
     {
-        isKnockbackActive = true;
-        //Vector2 moveForce = movement * moveSpeed;
-        rigidBody.AddForce(knockbackForce, ForceMode2D.Impulse);
-        StartCoroutine(ResetKnockback());
+        knockback.GetKnockedBack(knockbackDirection, knockbackForce);
     }
 
     private IEnumerator ResetKnockback()
