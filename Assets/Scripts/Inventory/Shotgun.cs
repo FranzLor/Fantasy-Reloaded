@@ -38,7 +38,7 @@ public class Shotgun : MouseFollow, InterfaceWeapon
     public void SpawnPelletsAnimationEvent()
     {
         GameObject pellets = Instantiate(shotgunPellets, shotgunPelletSpawnPoint.position, ActiveWeapon.Instance.transform.rotation);
-        pellets.GetComponent<Projectile>().UpdateWeaponDetails(weaponDetails);
+        pellets.GetComponent<Projectile>().UpdateProjectileRange(weaponDetails.weaponRange);
 
         ApplyKnockback();
     }

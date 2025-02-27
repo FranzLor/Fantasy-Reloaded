@@ -91,14 +91,13 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (knockback.GettingKnockedBack)
         {
-            // Let the knockback force handle movement
+            // let the knockback force handle movement
             return;
         }
 
-        // Use MovePosition for precise movement
         rigidBody.MovePosition(rigidBody.position + movement * (moveSpeed * Time.fixedDeltaTime));
 
-        //Vector2 moveForce = movement * moveSpeed;
+        // Vector2 moveForce = movement * moveSpeed;
         // rigidBody.AddForce(moveForce, ForceMode2D.Force);
     }
 
