@@ -26,6 +26,11 @@ public class Projectile : MonoBehaviour
         this.projectileRange = projectileRange;
     }
 
+    public void UpdateMoveSpeed(float moveSpeed)
+    {
+        this.moveSpeed = moveSpeed;
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         EnemyHealth enemyHealth = other.GetComponent<EnemyHealth>();
@@ -35,13 +40,19 @@ public class Projectile : MonoBehaviour
         // check for if not trigger to grab capsule collider in game object
         if (!other.isTrigger && (enemyHealth || indestructible || playerHealth))
         {
-            if (playerHealth && isEnemyProjectile)
+            if ((playerHealth && isEnemyProjectile) || (enemyHealth && !isEnemyProjectile))
             {
-                playerHealth.TakeDamage(1, transform);
-            }
+                playerHealth?.TakeDamage(1, transform);
 
-            Instantiate(particlePrefabVFX, transform.position, transform.rotation);
-            Destroy(gameObject);
+                Instantiate(particlePrefabVFX, transform.position, transform.rotation);
+                Destroy(gameObject);
+            }
+            // fix for indestructible objects, will need to refactor later
+            else if (!other.isTrigger && indestructible)
+            {
+                Instantiate(particlePrefabVFX, transform.position, transform.rotation);
+                Destroy(gameObject);
+            }
         }
     }
 

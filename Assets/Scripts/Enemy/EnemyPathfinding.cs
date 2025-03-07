@@ -46,4 +46,9 @@ public class EnemyPathfinding : MonoBehaviour
     {
         moveDirection = targetPosition;
     }
+
+    public void StopMoving()
+    {
+        moveDirection = Vector2.zero;
+    }
 }
