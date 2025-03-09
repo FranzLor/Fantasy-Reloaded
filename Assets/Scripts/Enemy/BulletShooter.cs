@@ -11,6 +11,8 @@ public class BulletShooter : MonoBehaviour, IEnemy
     [SerializeField] [Range(0, 359)] private float angleSpread;
     [SerializeField] private float startingDistance = 0.1f;
     [SerializeField] private float restTime = 1.0f;
+    [SerializeField] private bool oscillate;
+    [SerializeField] private bool stagger;
 
     private bool isShooting = false;
 
@@ -27,11 +29,38 @@ public class BulletShooter : MonoBehaviour, IEnemy
     private IEnumerator ShootRoutine()
     {
         isShooting = true;
+        float startAngle, currentAngle, angleStep, endAngle;
+        float timeBetweenProjectiles = 0.0f;
 
-        StartAngle(out float startAngle, out float currentAngle, out float angleStep);
+        TargetCone(out startAngle, out currentAngle, out angleStep, out endAngle);
+
+        if (stagger)
+        {
+            timeBetweenProjectiles = timeBetweenBursts / projectilesPerBurst;
+        }
 
         for (int i = 0; i < burstCount; i++)
         {
+            if (!oscillate)
+            {
+                TargetCone(out startAngle, out currentAngle, out angleStep, out endAngle);
+            }
+
+            // fixes problem where oscillate bursts dont point towards player, when both staggered and oscillate are true
+            if (oscillate && i % 2 != 1)
+            {
+                TargetCone(out startAngle, out currentAngle, out angleStep, out endAngle);
+
+            }
+            else if (oscillate)
+            {
+                currentAngle = endAngle;
+                endAngle = startAngle;
+                startAngle = currentAngle;
+                angleStep *= -1;
+            }
+
+
             for (int j = 0; j < projectilesPerBurst; j++)
             {
                 Vector2 position = FindBulletSpawnPosition(currentAngle);
@@ -45,26 +74,33 @@ public class BulletShooter : MonoBehaviour, IEnemy
                 }
 
                 currentAngle += angleStep;
+
+                if (stagger)
+                {
+                    yield return new WaitForSeconds(timeBetweenProjectiles);
+                }
             }
 
             currentAngle = startAngle;
 
-            yield return new WaitForSeconds(timeBetweenBursts);
-
-            StartAngle(out startAngle, out currentAngle, out angleStep);
+            // removes wait time when oscillating, infinite shooting
+            if (!stagger)
+            {
+                yield return new WaitForSeconds(timeBetweenBursts);
+            }
         }
 
         yield return new WaitForSeconds(restTime);
         isShooting = false;
     }
 
-    private void StartAngle(out float startAngle, out float currentAngle, out float angleStep)
+    private void TargetCone(out float startAngle, out float currentAngle, out float angleStep, out float endAngle)
     {
         Vector2 targetDirection = PlayerController.Instance.transform.position - transform.position;
 
         float targetAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
         startAngle = targetAngle;
-        float endAngle = targetAngle;
+        endAngle = targetAngle;
         currentAngle = targetAngle;
         float halfAngleSpread = 0.0f;
         angleStep = 0.0f;
