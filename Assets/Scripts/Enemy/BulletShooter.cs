@@ -6,15 +6,67 @@ public class BulletShooter : MonoBehaviour, IEnemy
     [SerializeField] private GameObject bulletPrefab;
     [SerializeField] private float bulletMoveSpeed;
     [SerializeField] private int burstCount;
-    [SerializeField] private float timeBetweenBursts;
     [SerializeField] private int projectilesPerBurst;
     [SerializeField] [Range(0, 359)] private float angleSpread;
     [SerializeField] private float startingDistance = 0.1f;
+    [SerializeField] private float timeBetweenBursts;
     [SerializeField] private float restTime = 1.0f;
+
+    [Tooltip("Stagger must be on for oscillate to work right.")]
     [SerializeField] private bool oscillate;
+
     [SerializeField] private bool stagger;
 
     private bool isShooting = false;
+
+    private void OnValidate()
+    {
+        // oscillate should only work if stagger is true
+        if (oscillate)
+        {
+            stagger = true;
+        }
+
+        if (!oscillate)
+        {
+            stagger = false;
+        }
+
+        if (projectilesPerBurst < 1)
+        {
+            projectilesPerBurst = 1;
+        }
+
+        if (burstCount < 1)
+        {
+            burstCount = 1;
+        }
+
+        if (timeBetweenBursts < 0.1f)
+        {
+            timeBetweenBursts = 0.1f;
+        }
+
+        if (restTime < 0.1f)
+        {
+            restTime = 0.1f;
+        }
+        
+        if (startingDistance < 0.1f)
+        {
+            startingDistance = 0.1f;
+        }
+
+        if (angleSpread == 0.0f)
+        {
+            projectilesPerBurst = 1;
+        }
+
+        if (bulletMoveSpeed <= 0)
+        {
+            bulletMoveSpeed = 0.1f;
+        }
+    }
 
     public void Attack()
     {
@@ -83,7 +135,7 @@ public class BulletShooter : MonoBehaviour, IEnemy
 
             currentAngle = startAngle;
 
-            // removes wait time when oscillating, infinite shooting
+            // removes wait time on stagger when oscillating, infinite shooting
             if (!stagger)
             {
                 yield return new WaitForSeconds(timeBetweenBursts);
