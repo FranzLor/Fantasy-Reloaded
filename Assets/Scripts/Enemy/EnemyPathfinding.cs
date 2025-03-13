@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class EnemyPathfinding : MonoBehaviour
 {
@@ -36,7 +37,7 @@ public class EnemyPathfinding : MonoBehaviour
         {
             spriteRenderer.flipX = true;
         }
-        else
+        else if (moveDirection.x > 0)
         {
             spriteRenderer.flipX = false;
         }
