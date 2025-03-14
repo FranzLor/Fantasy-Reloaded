@@ -14,8 +14,12 @@ public class Transparency : MonoBehaviour
     private SpriteRenderer[] spriteRenderers;
     private Tilemap[] tilemaps;
 
+    private SpriteRenderer spriteRenderer;
+
     private void Awake()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+
         spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
         tilemaps = GetComponentsInChildren<Tilemap>();
     }
@@ -101,6 +105,22 @@ public class Transparency : MonoBehaviour
             tilemap.color = new Color(tilemap.color.r, tilemap.color.g, tilemap.color.b, newAlpha);
             yield return null;
         }
+    }
+
+    public IEnumerator SlowFade()
+    {
+        float elapsedTime = 0.0f;
+        float startValue = spriteRenderer.color.a;
+
+        while (elapsedTime < fadeTime)
+        {
+            elapsedTime += Time.deltaTime;
+            float newAlpha = Mathf.Lerp(startValue, 0.0f, elapsedTime / fadeTime);
+            spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, newAlpha);
+            yield return null;
+        }
+
+        Destroy(gameObject);
     }
 
 }

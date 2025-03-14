@@ -7,7 +7,8 @@ public class MageProjectile : MonoBehaviour
     [SerializeField] private AnimationCurve animationCurve;
     [SerializeField] private float heightY = 4.0f;
     [SerializeField] private GameObject projectileShadow;
-    [SerializeField] private float projectileShadowHeight = -0.8f;
+    [SerializeField] private float projectileShadowHeight = -0.4f;
+    [SerializeField] private GameObject splatterPrefab;
 
     private void Start()
     {
@@ -18,7 +19,9 @@ public class MageProjectile : MonoBehaviour
         Vector3 projectileShadowStartPosition = projectileShadow.transform.position;
 
         StartCoroutine(ProjectileCurveRoutine(transform.position, playerPosition));
-        StartCoroutine(MoveProjectileShadowRoutine(projectileShadow, projectileShadowStartPosition, playerPosition));
+
+        StartCoroutine(MoveProjectileShadowRoutine
+            (projectileShadow, projectileShadowStartPosition, playerPosition - new Vector3(0, 0.5f, 0)));
     }
 
     private IEnumerator ProjectileCurveRoutine(Vector3 startPosition, Vector3 endPosition)
@@ -36,6 +39,8 @@ public class MageProjectile : MonoBehaviour
 
             yield return null;
         }
+
+        Instantiate(splatterPrefab, transform.position, Quaternion.identity);
 
         Destroy(gameObject);
     }
