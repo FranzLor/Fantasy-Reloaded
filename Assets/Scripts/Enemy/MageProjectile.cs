@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,6 +10,10 @@ public class MageProjectile : MonoBehaviour
     [SerializeField] private GameObject projectileShadow;
     [SerializeField] private float projectileShadowHeight = -0.4f;
     [SerializeField] private GameObject splatterPrefab;
+
+    private bool shouldDestroyOnLand = true;
+
+    public event Action OnArcComplete;
 
     private void Start()
     {
@@ -40,9 +45,18 @@ public class MageProjectile : MonoBehaviour
             yield return null;
         }
 
-        Instantiate(splatterPrefab, transform.position, Quaternion.identity);
+        if (splatterPrefab != null)
+        {
+            Instantiate(splatterPrefab, transform.position, Quaternion.identity);
+        }
 
-        Destroy(gameObject);
+        OnArcComplete?.Invoke();
+
+        // default, conditional for bombers - gets turned off
+        if (shouldDestroyOnLand)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private IEnumerator MoveProjectileShadowRoutine(GameObject projectileShadow, Vector3 startPosition, Vector3 endPosition)
@@ -59,5 +73,10 @@ public class MageProjectile : MonoBehaviour
         }
 
         Destroy(projectileShadow);
+    }
+
+    public void DisableDestructionOnLand()
+    {
+        shouldDestroyOnLand = false;
     }
 }

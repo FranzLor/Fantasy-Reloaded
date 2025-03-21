@@ -27,6 +27,6 @@ public class ProjectileLandSplatter : MonoBehaviour
 
     private void DisableCollider()
     {
-        GetComponent<CapsuleCollider2D>().enabled = false;
+        GetComponent<Collider2D>().enabled = false;
     }
 }
