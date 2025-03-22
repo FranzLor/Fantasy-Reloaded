@@ -3,6 +3,7 @@ using UnityEngine;
 public class Mage : MonoBehaviour, IEnemy
 {
     [SerializeField] private GameObject mageProjectilePrefab;
+    [SerializeField] private GameObject orbitalProjectilePrefab;
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
@@ -32,5 +33,12 @@ public class Mage : MonoBehaviour, IEnemy
     public void SpawnProjectileAnimationEvent()
     {
         Instantiate(mageProjectilePrefab, transform.position, Quaternion.identity);
+    }
+
+    public void SpawnOrbitalProjectileAnimationEvent()
+    {
+        // used by orbital projectiles
+        // separate from mage projectile - this will parent obj to the mage - might not need for other projectiles
+        Instantiate(orbitalProjectilePrefab, transform.position, Quaternion.identity, transform);
     }
 }
