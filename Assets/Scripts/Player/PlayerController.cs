@@ -33,6 +33,13 @@ public class PlayerController : Singleton<PlayerController>
     // getter and setter for facingLeft
     public bool FacingLeft { get { return facingLeft; } }
 
+    private Vector2 externalForce = Vector2.zero;
+    public Vector2 ExternalForce
+    {
+        get { return ExternalForce; }
+        set { ExternalForce = value; }
+    }
+
     protected override void Awake()
     {
         // called from singleton script
@@ -95,7 +102,11 @@ public class PlayerController : Singleton<PlayerController>
             return;
         }
 
-        rigidBody.MovePosition(rigidBody.position + movement * (moveSpeed * Time.fixedDeltaTime));
+        Vector2 totalMovement = movement * moveSpeed + externalForce;
+
+        rigidBody.MovePosition(rigidBody.position + totalMovement * Time.fixedDeltaTime);
+
+        externalForce = Vector2.zero;
 
         // Vector2 moveForce = movement * moveSpeed;
         // rigidBody.AddForce(moveForce, ForceMode2D.Force);
