@@ -5,10 +5,11 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float moveSpeed = 18.0f;
     [SerializeField] private GameObject particlePrefabVFX;
     [SerializeField] private bool isEnemyProjectile = false;
-
     [SerializeField] private float projectileRange = 10.0f;
+    [SerializeField] public bool useDynamicDirection = false;
 
     private Vector3 startPosition;
+    private Vector3 direction = Vector3.right;
 
     private void Start()
     {
@@ -29,6 +30,14 @@ public class Projectile : MonoBehaviour
     public void UpdateMoveSpeed(float moveSpeed)
     {
         this.moveSpeed = moveSpeed;
+    }
+
+    public void SetDirection(Vector3 newDirection)
+    {
+        if (useDynamicDirection)
+        {
+            direction = newDirection.normalized;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -67,6 +76,6 @@ public class Projectile : MonoBehaviour
 
     private void MoveProjectile()
     {
-        transform.Translate(Vector3.right * Time.deltaTime * moveSpeed);
+        transform.Translate(direction * Time.deltaTime * moveSpeed);
     }
 }
