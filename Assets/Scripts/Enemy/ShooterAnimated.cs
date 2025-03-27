@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class Mage : MonoBehaviour, IEnemy
+public class ShooterAnimated : MonoBehaviour, IEnemy
 {
-    [SerializeField] private GameObject mageProjectilePrefab;
+    [SerializeField] private GameObject projectilePrefab;
     [SerializeField] private GameObject orbitalProjectilePrefab;
 
     private Animator animator;
@@ -32,7 +32,7 @@ public class Mage : MonoBehaviour, IEnemy
 
     public void SpawnProjectileAnimationEvent()
     {
-        Instantiate(mageProjectilePrefab, transform.position, Quaternion.identity);
+        Instantiate(projectilePrefab, transform.position, Quaternion.identity);
     }
 
     public void SpawnOrbitalProjectileAnimationEvent()
