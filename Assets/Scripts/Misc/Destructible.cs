@@ -8,6 +8,8 @@ public class Destructible : MonoBehaviour
     {
         if (other.gameObject.GetComponent<DamageSource>() || other.gameObject.GetComponent<Projectile>())
         {
+            GetComponent<PickUpSpawner>().DropItems();
+
             Instantiate(destroyedVFX, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
