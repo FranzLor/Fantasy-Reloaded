@@ -91,7 +91,7 @@ public class PickUp : MonoBehaviour
         {
             case PickUpTypes.Coin:
                 Debug.Log("Coin+");
-
+                EconomyManager.Instance.UpdateCurrentCoin();
                 break;
 
             case PickUpTypes.Health:
