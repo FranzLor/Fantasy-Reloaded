@@ -102,7 +102,7 @@ public class PickUp : MonoBehaviour
 
             case PickUpTypes.Stamina:
                 Debug.Log("Stamina+");
-
+                Stamina.Instance.RestoreStamina();
                 break;
         }
     }
