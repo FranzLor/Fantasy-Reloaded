@@ -8,6 +8,9 @@ public class PlayerHealth : Singleton<PlayerHealth>
     [SerializeField] private float knockbackThrustAmount = 8.0f;
     [SerializeField] private float damageRecoveryTime = 1.0f;
 
+    // make sure string is exact in the hierarchy
+    private const string HealthSlider = "Health Slider";
+
     private int currentHealth;
     private bool canTakeDamage = true;
     private Knockback knockback;
@@ -92,8 +95,7 @@ public class PlayerHealth : Singleton<PlayerHealth>
     {
         if (healthSlider == null)
         {
-            // if it cant find health slider, make sure name string is exact in the hierarchy
-            healthSlider = GameObject.Find("Health Slider").GetComponent<Slider>();
+            healthSlider = GameObject.Find(HealthSlider).GetComponent<Slider>();
         }
 
         healthSlider.maxValue = maxHealth;
